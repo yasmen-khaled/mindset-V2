@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Test</title>
+</head>
+<body>
+    <h1>API Test</h1>
+    
+    <h2>Test Add Category</h2>
+    <button onclick="testAddCategory()">Add Test Category</button>
+    
+    <h2>Test Get Categories</h2>
+    <button onclick="testGetCategories()">Get Categories</button>
+    
+    <h2>Test Dashboard Stats</h2>
+    <button onclick="testDashboardStats()">Get Dashboard Stats</button>
+    
+    <div id="results"></div>
+
+    <script>
+        function testAddCategory() {
+            const formData = new FormData();
+            formData.append('name', 'Test Category ' + Date.now());
+            formData.append('level', '1');
+            formData.append('status', '1');
+            formData.append('options[]', 'Test Option 1');
+            formData.append('options[]', 'Test Option 2');
+            
+            fetch('/categories', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || ''
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('results').innerHTML = '<p>Add Category Result: ' + JSON.stringify(data) + '</p>';
+            })
+            .catch(error => {
+                document.getElementById('results').innerHTML = '<p>Error: ' + error.message + '</p>';
+            });
+        }
+        
+        function testGetCategories() {
+            fetch('/categories?level=1')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('results').innerHTML = '<p>Categories: ' + JSON.stringify(data) + '</p>';
+            })
+            .catch(error => {
+                document.getElementById('results').innerHTML = '<p>Error: ' + error.message + '</p>';
+            });
+        }
+        
+        function testDashboardStats() {
+            fetch('/api/dashboard/stats')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('results').innerHTML = '<p>Dashboard Stats: ' + JSON.stringify(data) + '</p>';
+            })
+            .catch(error => {
+                document.getElementById('results').innerHTML = '<p>Error: ' + error.message + '</p>';
+            });
+        }
+    </script>
+</body>
+</html> 
