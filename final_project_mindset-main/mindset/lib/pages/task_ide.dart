@@ -487,9 +487,9 @@ class _TaskIDEPageState extends State<TaskIDEPage> {
                                     color: Colors.grey.withOpacity(0.5),
                                     letterSpacing: 0.5,
                                   ),
-                                ),
                               ),
                             ),
+                          ),
                           // Transparent TextField for input
                           TextField(
                             controller: _codeController,

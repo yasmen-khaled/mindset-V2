@@ -5,6 +5,8 @@ import '../services/storage_service.dart';
 import '../models/leaderBoard.dart';
 import 'games.dart';
 import 'catagory.dart';
+import 'home_academic.dart';
+import 'home_tmazight.dart';
 import 'dart:math';
 
 class HomePage extends StatefulWidget {
@@ -29,7 +31,7 @@ class FloatingButton extends StatefulWidget {
     Key? key,
     required this.left,
     required this.top,
-    required this.buttonNumber,
+    required this.buttonNumber, 
     required this.currentLevel,
     //required this.onLevelComplete,
     required this.onSpecificLevelComplete,
@@ -434,9 +436,9 @@ class _HomePageState extends State<HomePage>
     ),
     TeamMember(
       name: 'Yasmena',
-      skills: 'Frontend, Animation',
+      skills: 'Frontend, Animation , Ui/Ux, Artist',
       role: 'Frontend Developer',
-      superpower: 37,
+      superpower: 100,
       svgPath: 'Assets/charcters/yasmena.svg',
       description:
           'Frontend specialist with a passion for creating smooth animations and responsive designs. Brings websites to life with dynamic interactions.',
@@ -2531,9 +2533,7 @@ void _buyLifePackage(int starsCost, int livesToAdd) async {
           backgroundColor: Colors.transparent,
           child: Container(
             width: MediaQuery.of(context).size.width * 0.95,
-            constraints: BoxConstraints(
-              maxHeight: MediaQuery.of(context).size.height * 0.85,
-            ),
+            height: MediaQuery.of(context).size.height * 0.85,
             decoration: BoxDecoration(
               color: const Color.fromARGB(255, 39, 93, 194),
               borderRadius: BorderRadius.circular(20),
@@ -2552,6 +2552,9 @@ void _buyLifePackage(int starsCost, int livesToAdd) async {
             child: StatefulBuilder(
               builder: (context, setState) {
                 final member = teamMembers[_currentTeamMemberIndex];
+                final screenWidth = MediaQuery.of(context).size.width;
+                final isSmallScreen = screenWidth < 400;
+                
                 return Stack(
                   children: [
                     // Background glow effects
@@ -2559,7 +2562,7 @@ void _buyLifePackage(int starsCost, int livesToAdd) async {
                       top: 0,
                       left: 0,
                       right: 0,
-                      height: 300,
+                      height: isSmallScreen ? 200 : 300,
                       child: Container(
                         decoration: BoxDecoration(
                           gradient: RadialGradient(
@@ -2574,145 +2577,199 @@ void _buyLifePackage(int starsCost, int livesToAdd) async {
                       ),
                     ),
 
-                    SingleChildScrollView(
-                      child: Column(
-                        children: [
-                        // Info section at the top
+                    Column(
+                      children: [
+                        // Info section at the top - made responsive
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(30, 30, 30, 20),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // Profile image
-                              Container(
-                                width: 150,
-                                height: 150,
-                                decoration: BoxDecoration(
-                                  color: Colors.white.withOpacity(0.1),
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: Colors.blue.withOpacity(0.5),
-                                    width: 2,
-                                  ),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.blue.withOpacity(0.2),
-                                      blurRadius: 15,
-                                      spreadRadius: 2,
+                          padding: EdgeInsets.fromLTRB(
+                            isSmallScreen ? 15 : 30, 
+                            isSmallScreen ? 20 : 30, 
+                            isSmallScreen ? 15 : 30, 
+                            isSmallScreen ? 15 : 20
+                          ),
+                          child: isSmallScreen 
+                            ? Column(
+                                children: [
+                                  // Profile image for small screens
+                                  Container(
+                                    width: isSmallScreen ? 100 : 150,
+                                    height: isSmallScreen ? 100 : 150,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white.withOpacity(0.1),
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                        color: Colors.blue.withOpacity(0.5),
+                                        width: 2,
+                                      ),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.blue.withOpacity(0.2),
+                                          blurRadius: 15,
+                                          spreadRadius: 2,
+                                        ),
+                                      ],
                                     ),
-                                  ],
-                                ),
-                                child: Center(
-                                  child: Icon(
-                                    Icons.person,
-                                    size: 80,
-                                    color: Colors.white.withOpacity(0.7),
+                                    child: Center(
+                                      child: Icon(
+                                        Icons.person,
+                                        size: isSmallScreen ? 50 : 80,
+                                        color: Colors.white.withOpacity(0.7),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 15),
+                                  // Info fields for small screens
+                                  ...['Name', 'Skills', 'Role', 'Superpower'].map((label) {
+                                    final value = label == 'Name' ? member.name 
+                                        : label == 'Skills' ? member.skills
+                                        : label == 'Role' ? member.role
+                                        : member.superpower.toString();
+                                    return Padding(
+                                      padding: const EdgeInsets.only(bottom: 8),
+                                      child: _buildInfoField(label, value),
+                                    );
+                                  }).toList(),
+                                ],
+                              )
+                            : Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  // Profile image for larger screens
+                                  Container(
+                                    width: 150,
+                                    height: 150,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white.withOpacity(0.1),
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                        color: Colors.blue.withOpacity(0.5),
+                                        width: 2,
+                                      ),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.blue.withOpacity(0.2),
+                                          blurRadius: 15,
+                                          spreadRadius: 2,
+                                        ),
+                                      ],
+                                    ),
+                                    child: Center(
+                                      child: Icon(
+                                        Icons.person,
+                                        size: 80,
+                                        color: Colors.white.withOpacity(0.7),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 25),
+                                  // Info fields for larger screens
+                                  Expanded(
+                                    child: Column(
+                                      children: [
+                                        _buildInfoField('Name', member.name),
+                                        const SizedBox(height: 10),
+                                        _buildInfoField('Skills', member.skills),
+                                        const SizedBox(height: 10),
+                                        _buildInfoField('Role', member.role),
+                                        const SizedBox(height: 10),
+                                        _buildInfoField('Superpower', member.superpower.toString()),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                        ),
+
+                        // Character SVG and Description section - made responsive
+                        Expanded(
+                          child: Column(
+                            children: [
+                              // Character SVG - responsive sizing
+                              Expanded(
+                                child: Container(
+                                  width: double.infinity,
+                                  padding: EdgeInsets.symmetric(
+                                    vertical: isSmallScreen ? 5 : 10,
+                                    horizontal: isSmallScreen ? 10 : 20,
+                                  ),
+                                  child: SvgPicture.asset(
+                                    member.svgPath,
+                                    fit: BoxFit.fitHeight,
                                   ),
                                 ),
                               ),
-                              const SizedBox(width: 25),
-                              // Info fields
-                              Expanded(
-                                child: Column(
-                                  children: [
-                                    _buildInfoField('Name', member.name),
-                                    const SizedBox(height: 10),
-                                    _buildInfoField('Skills', member.skills),
-                                    const SizedBox(height: 10),
-                                    _buildInfoField('Role', member.role),
-                                    const SizedBox(height: 10),
-                                    _buildInfoField('Superpower',
-                                        member.superpower.toString()),
-                                  ],
+                              
+                              // Description at the bottom - responsive padding and font
+                              Container(
+                                width: double.infinity,
+                                padding: EdgeInsets.all(isSmallScreen ? 20 : 30),
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [
+                                      const Color.fromARGB(0, 114, 187, 255),
+                                      const Color.fromARGB(255, 31, 80, 172).withOpacity(0.9),
+                                      const Color.fromRGBO(32, 90, 199, 1),
+                                    ],
+                                    stops: const [0.0, 0.3, 0.6],
+                                  ),
+                                ),
+                                child: Text(
+                                  member.description,
+                                  style: TextStyle(
+                                    color: Colors.white.withOpacity(0.9),
+                                    fontSize: isSmallScreen ? 14 : 18,
+                                    height: 1.5,
+                                  ),
+                                  textAlign: TextAlign.center,
                                 ),
                               ),
                             ],
                           ),
                         ),
 
-                        // Character SVG and Description section
-                        Column(
-                          children: [
-                            // Character SVG
-                            Container(
-                              width: double.infinity,
-                              height: 200,
-                              padding: const EdgeInsets.symmetric(vertical: 10),
-                              child: SvgPicture.asset(
-                                member.svgPath,
-                                fit: BoxFit.contain,
-                              ),
-                            ),
-
-                            // Description at the bottom
-                            Container(
-                              width: double.infinity,
-                              padding: const EdgeInsets.all(30),
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter,
-                                  colors: [
-                                    const Color.fromARGB(0, 114, 187, 255),
-                                    const Color.fromARGB(255, 31, 80, 172)
-                                        .withOpacity(0.9),
-                                    const Color.fromRGBO(32, 90, 199, 1),
-                                  ],
-                                  stops: const [0.0, 0.3, 0.6],
-                                ),
-                              ),
-                              child: Text(
-                                member.description,
-                                style: TextStyle(
-                                  color: Colors.white.withOpacity(0.9),
-                                  fontSize: 18,
-                                  height: 1.5,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ],
-                        ),
-
-                        // Page indicator
+                        // Page indicator - responsive positioning
                         Padding(
-                          padding: const EdgeInsets.only(bottom: 30),
+                          padding: EdgeInsets.only(
+                            bottom: isSmallScreen ? 20 : 30,
+                            left: isSmallScreen ? 10 : 20,
+                            right: isSmallScreen ? 10 : 20,
+                          ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: List.generate(
                               teamMembers.length,
                               (index) => Container(
-                                width: 12,
-                                height: 12,
-                                margin:
-                                    const EdgeInsets.symmetric(horizontal: 4),
+                                width: isSmallScreen ? 8 : 12,
+                                height: isSmallScreen ? 8 : 12,
+                                margin: EdgeInsets.symmetric(horizontal: isSmallScreen ? 3 : 4),
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: index == _currentTeamMemberIndex
-                                      ? Colors.blue
-                                      : Colors.white.withOpacity(0.3),
+                                    ? Colors.blue
+                                    : Colors.white.withOpacity(0.3),
                                   boxShadow: index == _currentTeamMemberIndex
-                                      ? [
-                                          BoxShadow(
-                                            color: Colors.blue.withOpacity(0.5),
-                                            blurRadius: 6,
-                                            spreadRadius: 1,
-                                          ),
-                                        ]
-                                      : null,
+                                    ? [
+                                        BoxShadow(
+                                          color: Colors.blue.withOpacity(0.5),
+                                          blurRadius: 6,
+                                          spreadRadius: 1,
+                                        ),
+                                      ]
+                                    : null,
                                 ),
                               ),
                             ),
                           ),
                         ),
-                        ],
-                      ),
+                      ],
                     ),
-
-                    // Navigation arrows with enhanced styling
+                    
+                    // Navigation arrows - responsive positioning and sizing
                     Positioned(
-                      left: 10,
-                      top: 300,
+                      left: isSmallScreen ? 5 : 10,
+                      top: isSmallScreen ? 200 : 300,
                       child: Container(
                         decoration: BoxDecoration(
                           color: Colors.white.withOpacity(0.1),
@@ -2725,26 +2782,24 @@ void _buyLifePackage(int starsCost, int livesToAdd) async {
                         child: IconButton(
                           onPressed: () {
                             setState(() {
-                              _currentTeamMemberIndex =
-                                  (_currentTeamMemberIndex - 1) %
-                                      teamMembers.length;
+                              _currentTeamMemberIndex = (_currentTeamMemberIndex - 1) % teamMembers.length;
                               if (_currentTeamMemberIndex < 0) {
-                                _currentTeamMemberIndex =
-                                    teamMembers.length - 1;
+                                _currentTeamMemberIndex = teamMembers.length - 1;
                               }
                             });
                           },
                           icon: Icon(
                             Icons.chevron_left,
                             color: Colors.white.withOpacity(0.9),
-                            size: 32,
+                            size: isSmallScreen ? 24 : 32,
                           ),
+                          padding: EdgeInsets.all(isSmallScreen ? 8 : 12),
                         ),
                       ),
                     ),
                     Positioned(
-                      right: 10,
-                      top: 300,
+                      right: isSmallScreen ? 5 : 10,
+                      top: isSmallScreen ? 200 : 300,
                       child: Container(
                         decoration: BoxDecoration(
                           color: Colors.white.withOpacity(0.1),
@@ -2757,24 +2812,23 @@ void _buyLifePackage(int starsCost, int livesToAdd) async {
                         child: IconButton(
                           onPressed: () {
                             setState(() {
-                              _currentTeamMemberIndex =
-                                  (_currentTeamMemberIndex + 1) %
-                                      teamMembers.length;
+                              _currentTeamMemberIndex = (_currentTeamMemberIndex + 1) % teamMembers.length;
                             });
                           },
                           icon: Icon(
                             Icons.chevron_right,
                             color: Colors.white.withOpacity(0.9),
-                            size: 32,
+                            size: isSmallScreen ? 24 : 32,
                           ),
+                          padding: EdgeInsets.all(isSmallScreen ? 8 : 12),
                         ),
                       ),
                     ),
-
-                    // Close button with enhanced styling
+                    
+                    // Close button - responsive positioning and sizing
                     Positioned(
-                      right: 10,
-                      top: 10,
+                      right: isSmallScreen ? 5 : 10,
+                      top: isSmallScreen ? 5 : 10,
                       child: Container(
                         decoration: BoxDecoration(
                           color: Colors.white.withOpacity(0.1),
@@ -2789,7 +2843,9 @@ void _buyLifePackage(int starsCost, int livesToAdd) async {
                           icon: Icon(
                             Icons.close,
                             color: Colors.white.withOpacity(0.9),
+                            size: isSmallScreen ? 20 : 24,
                           ),
+                          padding: EdgeInsets.all(isSmallScreen ? 8 : 12),
                         ),
                       ),
                     ),
@@ -3251,28 +3307,33 @@ Widget _buildLifePackage({
               left: -50,
               top: MediaQuery.of(context).size.height * 0.3,
               child: GestureDetector(
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      backgroundColor: const Color(0xFF0A1832),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      title: const Text(
-                        'Tmazight',
-                        style: TextStyle(color: Colors.white),
-                      ),
+                onTap: () async {
+                  // Update learning path to Tmazight
+                  await StorageService.updateLearningPath('tmazight_language');
+                  
+                  // Navigate to Tmazight home page
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => TmazightHomePage(username: currentUsername),
+                    ),
+                  );
+                  
+                  // Show success message
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
                       content: const Text(
-                        'Opening Tmazight section...',
-                        style: TextStyle(color: Colors.white70),
+                        'Switched to Tmazight Language path!',
+                        style: TextStyle(color: Colors.white),
+                        textAlign: TextAlign.center,
                       ),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.pop(context),
-                          child: const Text('Close'),
-                        ),
-                      ],
+                      backgroundColor: Colors.green.withOpacity(0.7),
+                      duration: const Duration(seconds: 2),
+                      behavior: SnackBarBehavior.floating,
+                      margin: const EdgeInsets.only(bottom: 100, left: 50, right: 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25),
+                      ),
                     ),
                   );
                 },
@@ -3699,14 +3760,30 @@ Widget _buildLifePackage({
     );
   }
 
-  Widget _buildLearningPathOption(String title, String subtitle, IconData icon,
-      Color color, String pathId) {
+  Widget _buildLearningPathOption(String title, String subtitle, IconData icon, Color color, String pathId) {
     return GestureDetector(
       onTap: () async {
         // Save the new learning path
         await StorageService.updateLearningPath(pathId);
         Navigator.pop(context);
+        
+        // Navigate to the appropriate home page based on learning path
+        Widget targetPage;
+        if (pathId == 'academic_courses') {
+          targetPage = AcademicHomePage(username: currentUsername);
+        } else if (pathId == 'tmazight_language') {
+          targetPage = TmazightHomePage(username: currentUsername);
+        } else {
+          // software_engineering - refresh current page
+          targetPage = HomePage(username: currentUsername);
+        }
 
+        // Navigate to the new page
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => targetPage),
+        );
+        
         // Show success message
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -3719,8 +3796,7 @@ Widget _buildLifePackage({
             duration: const Duration(seconds: 2),
             behavior: SnackBarBehavior.floating,
             margin: const EdgeInsets.only(bottom: 100, left: 50, right: 50),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
           ),
         );
       },

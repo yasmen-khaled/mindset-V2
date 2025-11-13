@@ -19,12 +19,12 @@ class _OnboardingState extends State<Onboarding> {
     OnboardingItem(
       title: 'Welcome to Mindset',
       description: 'Your journey to mental wellness starts here',
-      svgPath: '',
-      imageScale: 1.2,
-      imageTop: 0.3,
+      svgPath: 'Assets/onbording/line.svg',
+      imageScale: 2.0,
+      imageTop: 0.35,
       imageLeft: 0,
-      imageWidth: 1.0,
-      imageHeight: 0.5,
+      imageWidth: 1.3,
+      imageHeight: 0.4,
       imageAlignment: Alignment.center,
     ),
     OnboardingItem(
@@ -52,7 +52,7 @@ class _OnboardingState extends State<Onboarding> {
     OnboardingItem(
       title: 'Community Support',
       description: 'Connect with others on similar journeys',
-      svgPath: 'Assets/onbording/image3.svg',
+      imagePath: 'Assets/onbording/s2.png',
       imageScale: 1.1,
       imageTop: 0.35,
       imageLeft: 0,
@@ -162,6 +162,7 @@ class _OnboardingState extends State<Onboarding> {
               controller: _pageController,
               onPageChanged: _onPageChanged,
               itemCount: _pages.length,
+              physics: const PageScrollPhysics(), // Enable swiping left/right
               itemBuilder: (context, index) {
                 return OnboardingPage(
                   item: _pages[index],
@@ -344,32 +345,40 @@ class OnboardingPage extends StatelessWidget {
               left: item.imageLeft != null
                   ? size.width * (item.imageLeft! / size.width)
                   : 0,
+              right: 0,
               child: SizedBox(
                 height: size.height * (item.imageHeight ?? 0.4),
-                width: size.width * (item.imageWidth ?? 0.9),
+                width: size.width * (item.imageWidth ?? 1.0),
                 child: Transform.scale(
                   scale: item.imageScale ?? 1.0,
                   child: Align(
                     alignment: item.imageAlignment ?? Alignment.centerLeft,
-                    child: item.svgPath != null
+                    child: item.svgPath != null && item.svgPath!.isNotEmpty
                         ? SvgPicture.asset(
                             item.svgPath!,
                             fit: BoxFit.contain,
+                            width: size.width * (item.imageWidth ?? 1.0),
+                            height: size.height * (item.imageHeight ?? 0.4),
+                            alignment: item.imageAlignment ?? Alignment.center,
                             placeholderBuilder: (context) =>
                                 _buildLoadingPlaceholder(size),
                             errorBuilder: (context, error, stackTrace) {
-                              debugPrint('Error loading SVG: $error');
+                              debugPrint('Error loading SVG: $error for ${item.svgPath}');
                               return _buildErrorPlaceholder(size);
                             },
                           )
-                        : Image.asset(
-                            item.imagePath!,
-                            fit: BoxFit.contain,
-                            errorBuilder: (context, error, stackTrace) {
-                              debugPrint('Error loading image: $error');
-                              return _buildErrorPlaceholder(size);
-                            },
-                          ),
+                        : item.imagePath != null
+                            ? Image.asset(
+                                item.imagePath!,
+                                fit: BoxFit.contain,
+                                width: size.width * (item.imageWidth ?? 1.0),
+                                height: size.height * (item.imageHeight ?? 0.4),
+                                errorBuilder: (context, error, stackTrace) {
+                                  debugPrint('Error loading image: $error');
+                                  return _buildErrorPlaceholder(size);
+                                },
+                              )
+                            : const SizedBox.shrink(),
                   ),
                 ),
               ),

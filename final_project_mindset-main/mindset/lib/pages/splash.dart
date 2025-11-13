@@ -8,17 +8,50 @@ class Splash extends StatefulWidget {
   State<Splash> createState() => _SplashState();
 }
 
-class _SplashState extends State<Splash> {
+class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+  late Animation<double> _fadeAnimation;
+
   @override
   void initState() {
     super.initState();
-    _checkLoginStatus();
+    
+    // Initialize animation controller
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1500),
+    );
+    
+    // Create fade animation
+    _fadeAnimation = Tween<double>(
+      begin: 1.0,
+      end: 0.0,
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeOut,
+    ));
+    
+    _startAnimation();
+  }
+
+  Future<void> _startAnimation() async {
+    // Wait 2.5 seconds before starting fade out
+    await Future.delayed(const Duration(milliseconds: 2500));
+    
+    // Start fade out animation
+    if (mounted) {
+      _animationController.forward();
+    }
+    
+    // Wait for fade animation to complete, then navigate
+    await Future.delayed(const Duration(milliseconds: 1500));
+    
+    if (mounted) {
+      _checkLoginStatus();
+    }
   }
 
   Future<void> _checkLoginStatus() async {
-    // Wait for splash screen animation
-    await Future.delayed(const Duration(seconds: 2));
-    
     // Check if user is already logged in
     final isLoggedIn = await StorageService.isLoggedIn();
     
@@ -41,87 +74,50 @@ class _SplashState extends State<Splash> {
   }
 
   @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     
     return Scaffold(
       backgroundColor: Colors.black,
-      body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('Assets/background/_splash.jpg'),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Colors.black.withOpacity(0.3),
-                Colors.black.withOpacity(0.2),
-                Colors.black.withOpacity(0.3),
-              ],
-            ),
-          ),
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // Logo
-                Container(
-                  width: size.width * 0.3,
-                  height: size.width * 0.3,
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage('Assets/logo/proto.svg'),
-                      fit: BoxFit.contain,
-                    ),
-                  ),
+      body: Center(
+        child: AnimatedBuilder(
+          animation: _fadeAnimation,
+          builder: (context, child) {
+            return Opacity(
+              opacity: _fadeAnimation.value,
+              child: SizedBox(
+                width: size.width * 0.6,
+                height: size.width * 0.6,
+                child: Image.asset(
+                  'Assets/logo/proto.png',
+                  fit: BoxFit.contain,
+                  filterQuality: FilterQuality.high,
+                  errorBuilder: (context, error, stackTrace) {
+                    debugPrint('Error loading logo: $error');
+                    return Container(
+                      width: size.width * 0.4,
+                      height: size.width * 0.4,
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: const Icon(
+                        Icons.image_not_supported,
+                        size: 50,
+                        color: Colors.white70,
+                      ),
+                    );
+                  },
                 ),
-                const SizedBox(height: 20),
-                
-                // App Name
-                const Text(
-                  'MINDSET',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 32,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 3,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                
-                // Tagline
-                const Text(
-                  'Learning Made Easy',
-                  style: TextStyle(
-                    color: Colors.white70,
-                    fontSize: 16,
-                    letterSpacing: 1,
-                  ),
-                ),
-                const SizedBox(height: 40),
-                
-                // Loading indicator
-                const CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                ),
-                const SizedBox(height: 20),
-                
-                // Loading text
-                const Text(
-                  'Checking login status...',
-                  style: TextStyle(
-                    color: Colors.white60,
-                    fontSize: 14,
-                  ),
-                ),
-              ],
-            ),
-          ),
+              ),
+            );
+          },
         ),
       ),
     );

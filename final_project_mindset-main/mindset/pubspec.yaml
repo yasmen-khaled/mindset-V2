@@ -66,12 +66,15 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - Assets/logo/proto.svg
+    - Assets/logo/proto.png
     - Assets/logo/small_proto.svg
     - Assets/logo/logo.svg
     - Assets/background/_splash.jpg
     - Assets/onbording/new.svg
     - Assets/onbording/start.svg
     - Assets/onbording/cart2.svg
+    - Assets/onbording/line.svg
+    - Assets/onbording/s2.png
     - Assets/onbording/image2.svg
     - Assets/onbording/image3.svg
     - Assets/onbording/level1.svg

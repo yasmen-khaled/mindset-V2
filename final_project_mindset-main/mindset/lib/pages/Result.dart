@@ -9,8 +9,14 @@ class ResultPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0D1B4D),
-      body: Center(
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('Assets/background/result.png'),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -83,6 +89,7 @@ Text('${score}%', style: TextStyle(color: Colors.green, fontSize: 18, fontWeight
               ),
             ),
           ],
+        ),
         ),
       ),
     );

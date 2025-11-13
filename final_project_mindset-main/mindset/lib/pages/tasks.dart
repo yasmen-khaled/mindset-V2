@@ -585,89 +585,89 @@ void debugSvgContent(String url) async {
               ),
             ),
             const SizedBox(height: 24),
-            // Action buttons
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0),
-              child: Row(
-                children: [
+              // Action buttons
+                                              Padding(
+                                                padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                                                child: Row(
+                                                  children: [
                   // Back button
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () => Navigator.pop(context),
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(Colors.grey[700]),
+                                                    Expanded(
+                                                      child: ElevatedButton(
+                                                        onPressed: () => Navigator.pop(context),
+                                                        style: ButtonStyle(
+                                                          backgroundColor: MaterialStateProperty.all(Colors.grey[700]),
                         padding: MaterialStateProperty.all(
                           EdgeInsets.symmetric(vertical: 12),
                         ),
                         shape: MaterialStateProperty.all(
                           RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
+                                                            borderRadius: BorderRadius.circular(12),
                           ),
                         ),
                         elevation: MaterialStateProperty.all(2),
-                      ),
-                      child: Text(
-                        'Back',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
+                                                        ),
+                                                        child: Text(
+                                                          'Back',
+                                                          style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 14,
+                                                            fontWeight: FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
                   const SizedBox(width: 12),
-                  // Start Task button
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => TaskIDEPage(
+                                                    // Start Task button
+                                                    Expanded(
+                                                      child: ElevatedButton(
+                                                        onPressed: () {
+                                                          Navigator.pop(context);
+                                                          Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                              builder: (context) => TaskIDEPage(
                               taskId: task.id.toString(),
                               taskTitle: task.title,
                               taskDescription: task.description,
-                              taskQuestion: 'Write a function that takes a list of positive affirmations and returns them in reverse order with each affirmation capitalized.',
-                              requirements: [
-                                'Function must accept a list of strings',
-                                'Return a new list with items in reverse order',
-                                'Each affirmation must be fully capitalized',
-                                'Handle empty lists gracefully',
-                                'Function should be named "processAffirmations"',
-                              ],
-                              exampleInput: 'input = ["stay positive", "believe in yourself", "you are strong"]',
-                              exampleOutput: 'output = ["YOU ARE STRONG", "BELIEVE IN YOURSELF", "STAY POSITIVE"]',
-                            ),
-                          ),
-                        );
-                      },
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(Colors.green[600]),
+                                                                taskQuestion: 'Write a function that takes a list of positive affirmations and returns them in reverse order with each affirmation capitalized.',
+                                                                requirements: [
+                                                                  'Function must accept a list of strings',
+                                                                  'Return a new list with items in reverse order',
+                                                                  'Each affirmation must be fully capitalized',
+                                                                  'Handle empty lists gracefully',
+                                                                  'Function should be named "processAffirmations"',
+                                                                ],
+                                                                exampleInput: 'input = ["stay positive", "believe in yourself", "you are strong"]',
+                                                                exampleOutput: 'output = ["YOU ARE STRONG", "BELIEVE IN YOURSELF", "STAY POSITIVE"]',
+                                                              ),
+                                                            ),
+                                                          );
+                                                        },
+                                                        style: ButtonStyle(
+                                                          backgroundColor: MaterialStateProperty.all(Colors.green[600]),
                         padding: MaterialStateProperty.all(
                           EdgeInsets.symmetric(vertical: 12),
                         ),
                         shape: MaterialStateProperty.all(
                           RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
+                                                            borderRadius: BorderRadius.circular(12),
                           ),
                         ),
                         elevation: MaterialStateProperty.all(2),
-                      ),
-                      child: Text(
-                        'Start Task',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+                                                        ),
+                                                        child: Text(
+                                                          'Start Task',
+                                                          style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 14,
+                                                            fontWeight: FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
             const SizedBox(height: 24),
             
 

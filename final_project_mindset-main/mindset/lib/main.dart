@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 183, 154, 58)),
         scaffoldBackgroundColor: Colors.black,
       ),
-      initialRoute: "/onboarding",
+      initialRoute: "/splash",
       routes: {
         "/splash": (context) => const Splash(),
         "/onboarding": (context) => const Onboarding(),
